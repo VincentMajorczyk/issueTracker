@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 @Qualifier("jpa")
 public class IssueJPAService implements IssueService{
+    String errorname = "Issue";
 
     @Autowired
     private IssueRepository issueRepository;
@@ -28,14 +29,14 @@ public class IssueJPAService implements IssueService{
         if (issue.isPresent()) {
             return issue.get();
         } else {
-            throw new ResourceNotFoundException("Issue", code);
+            throw new ResourceNotFoundException(errorname, code);
         }
     }
 
     @Override
     public Issue create(Issue newIssue) throws ResourceAlreadyExistsException {
         if(issueRepository.existsById(newIssue.getCode())){
-            throw new ResourceAlreadyExistsException("Issue", newIssue.getCode());
+            throw new ResourceAlreadyExistsException(errorname, newIssue.getCode());
         }
         else{
             return issueRepository.save(newIssue);
@@ -48,7 +49,7 @@ public class IssueJPAService implements IssueService{
             issueRepository.save(updatedIssue);
         }
         else {
-            throw new ResourceNotFoundException("Issue", code);
+            throw new ResourceNotFoundException(errorname, code);
         }
     }
 
